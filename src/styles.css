@@ -1,0 +1,27 @@
+html {
+    margin: 8px;
+}
+
+.input {
+    display: flex;
+    justify-content: space-between;
+}
+
+.text {
+    resize: none;
+    width: 49%;
+    margin-left: 1%;
+}
+
+.submit {
+    display: block;
+    margin: 10px auto;
+}
+
+.diff-code-insert .space .diff-code-edit {
+    background-color: #eaffee;
+}
+
+.diff-code-delete .space .diff-code-edit {
+    background-color: #fdeff0;
+}
