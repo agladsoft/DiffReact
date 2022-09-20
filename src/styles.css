@@ -1,6 +1,11 @@
 html {
     margin: 8px;
 }
+#pdf_files::placeholder {
+    color: blue;
+    font-size: 1.2em;
+    font-style: italic;
+  }
 
 .input {
     display: flex;
