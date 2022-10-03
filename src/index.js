@@ -54,7 +54,8 @@ function App() {
             loadPDF(fileReader.result)
         })
         async function loadPDF(result) {
-            const dictFile = {file: [file.name, result] }
+            const key = file.name
+            const dictFile = {[key]: result }
             console.log(dictFile)
             run()
             let response = await fetch("http://10.23.4.205:5000", {
