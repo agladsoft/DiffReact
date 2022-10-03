@@ -47,6 +47,7 @@ function App() {
     // insert PDF text
     const [oldText, setTextValue] = useState('');
     async function handleChange(e) {
+        setTextValue("");
         const file = e.target.files[0];
         const fileReader = new FileReader();
         fileReader.addEventListener('load', ()=> {
