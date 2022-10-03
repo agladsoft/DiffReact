@@ -11,7 +11,6 @@ import {run} from './animate.js'
 import PizZip from "pizzip"
 import Docxtemplater from "docxtemplater";
 
-
 const EMPTY_HUNKS = [];
 
 const renderToken = (token, defaultRender, i) => {
@@ -30,7 +29,6 @@ const renderToken = (token, defaultRender, i) => {
 
 function App() {
     const [{type, hunks}, setDiff] = useState('');
-
     // // insert oldText
     // const [oldText, setTextValue] = useState('');
     // const handleChange = (e) => {
@@ -49,18 +47,26 @@ function App() {
     // insert PDF text
     const [oldText, setTextValue] = useState('');
     async function handleChange(e) {
-        const file = { file: e.target.files[0].name };
-        run()
-        console.log(file);
-        let response = await fetch("http://127.0.0.1:5000", {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(file),
-            mode: 'cors'
-        });
-        const new_file = await response.json();
-        console.log(new_file['text']);
-        setTextValue(new_file['text']);
+        const file = e.target.files[0];
+        const fileReader = new FileReader();
+        fileReader.addEventListener('load', ()=> {
+            loadPDF(fileReader.result)
+        })
+        async function loadPDF(result) {
+            const dictFile = {file: [file.name, result] }
+            console.log(dictFile)
+            run()
+            let response = await fetch("http://127.0.0.1:5000", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dictFile),
+                mode: 'cors'
+            });
+            const new_file = await response.json();
+            console.log(new_file['text']);
+            setTextValue(new_file['text']);
+        }
+        fileReader.readAsDataURL(file)
     };
 
 
@@ -88,6 +94,7 @@ function App() {
     //         await worker.load();
     //         await worker.loadLanguage('rus+eng');
     //         await worker.initialize('rus+eng');
+    //         console.log("file", e.target.files[0])
     //         const { data: { text } } = await worker.recognize(e.target.files[0]);
     //         console.log(text);
     //         setTextValue(text);
