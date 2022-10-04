@@ -29,25 +29,26 @@ const renderToken = (token, defaultRender, i) => {
 
 function App() {
     const [{type, hunks}, setDiff] = useState('');
-    // // insert oldText
-    // const [oldText, setTextValue] = useState('');
-    // const handleChange = (e) => {
-    //     const file = e.target.files[0];
-    //     let reader = new FileReader();
-    //     reader.onload = (e) => {
-    //         const file = e.target.result;
-    //         console.log(file);
-    //         setTextValue(file);
-    //     };
-    //     reader.onerror = (e) => alert(e.target.error.name);
-    //     reader.readAsText(file);
-    // };
 
+    // insert Docx text
+    const [oldText, setTextValue] = useState('');
+    const handleChange = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const content = e.target.result;
+            var doc = new Docxtemplater(new PizZip(content), {delimiters: {start: '12op1j2po1j2poj1po', end: 'op21j4po21jp4oj1op24j'}});
+            var text = doc.getFullText();
+            console.log(text);
+            setTextValue(text);
+        };
+        reader.readAsBinaryString(file);
+    };
 
     // insert PDF text
-    const [oldText, setTextValue] = useState('');
-    async function handleChange(e) {
-        setTextValue("");
+    const [newText, setTextValue2] = useState('');
+    async function handleChange2(e) {
+        setTextValue2("");
         const file = e.target.files[0];
         const fileReader = new FileReader();
         fileReader.addEventListener('load', ()=> {
@@ -58,7 +59,7 @@ function App() {
             const dictFile = {[key]: result }
             console.log(dictFile)
             run()
-            let response = await fetch("http://10.23.4.205:5000", {
+            let response = await fetch("http://127.0.0.1:5000", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dictFile),
@@ -66,72 +67,9 @@ function App() {
             });
             const new_file = await response.json();
             console.log(new_file['text']);
-            setTextValue(new_file['text']);
+            setTextValue2(new_file['text']);
         }
         fileReader.readAsDataURL(file)
-    };
-
-
-    // insert newText
-    // const [newText, setTextValue2] = useState('');
-    // const handleChange2 = (e) => {
-    //     const file = e.target.files[0];
-    //     document.getElementById('pdf_files').placeholder='Loading...';
-    //     let reader = new FileReader();
-    //     reader.onload = (e) => {
-    //         const file = e.target.result;
-    //         console.log(file);
-    //         setTextValue2(file);
-    //     };
-    //     reader.onerror = (e) => alert(e.target.error.name);
-    //     reader.readAsText(file);
-    // };
-
-    // // insert Jpg text
-    // const [oldText, setTextValue] = useState('');
-    // const handleChange = (e) => {
-    //     const worker = createWorker();
-          
-    //       (async () => {
-    //         await worker.load();
-    //         await worker.loadLanguage('rus+eng');
-    //         await worker.initialize('rus+eng');
-    //         console.log("file", e.target.files[0])
-    //         const { data: { text } } = await worker.recognize(e.target.files[0]);
-    //         console.log(text);
-    //         setTextValue(text);
-    //         await worker.terminate();
-    //       })();
-    // };
-    
-    // // insert Docx text
-    // const [oldText, setTextValue] = useState('');
-    // const handleChange = (e) => {
-    //     const file = e.target.files[0];
-    //     const reader = new FileReader();
-    //     reader.onload = async (e) => {
-    //         const content = e.target.result;
-    //         var doc = new Docxtemplater(new PizZip(content), {delimiters: {start: '12op1j2po1j2poj1po', end: 'op21j4po21jp4oj1op24j'}});
-    //         var text = doc.getFullText();
-    //         console.log(text);
-    //         setTextValue(text);
-    //     };
-    //     reader.readAsBinaryString(file);
-    // };
-
-    // insert Docx text
-    const [newText, setTextValue2] = useState('');
-    const handleChange2 = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onload = async (e) => {
-            const content = e.target.result;
-            var doc = new Docxtemplater(new PizZip(content), {delimiters: {start: '12op1j2po1j2poj1po', end: 'op21j4po21jp4oj1op24j'}});
-            var text = doc.getFullText();
-            console.log(text);
-            setTextValue2(text);
-        };
-        reader.readAsBinaryString(file);
     };
 
 
@@ -141,6 +79,35 @@ function App() {
         setDiff(diff);
     }, [oldText, newText, setDiff]);
     const tokens = useMemo(() => tokenize(hunks), [hunks]);
+    console.log(tokens);
+
+    // function SplitByString(source, splitBy) {
+    //     var splitter = splitBy.split('');
+    //     splitter.push([source]); //Push initial value
+      
+    //     return splitter.reduceRight(function(accumulator, curValue) {
+    //       var k = [];
+    //       accumulator.forEach(v => k = [...k, ...v.split(curValue)]);
+    //       return k;
+    //     });
+    //   }
+
+    // try {
+    //     for (let i = 0; i < tokens['new'][0].length; i++) {
+    //         console.log(tokens['new'][0][i]);
+    //         if (tokens['new'][0][i]['type'] === 'text') {
+    //             var splitBy = ",. ";
+    //             const array_text = SplitByString(tokens['new'][0][i]['value'], splitBy);
+    //             console.log(array_text.slice(array_text.length - 2, array_text.length))
+    //         }
+    //         else {
+    //             // console.log(tokens['new'][0][i]['lineNumber'])
+    //             console.log(tokens['new'][0][i]['children'][0]['value'])
+    //         }
+    //       }
+    //   } catch (error) {
+    //     console.error(error);
+    // }
 
     return (
         <div>
@@ -149,7 +116,7 @@ function App() {
                 <input type="file" className="text" onChange={handleChange2} />
                 <div className="input">
                     <Input.TextArea className="text" id='pdf_files' value={oldText} onChange={setTextValue} rows={10} placeholder="" {...oldText} />
-                    <Input.TextArea className="text" id='pdf_files' value={newText} onChange={setTextValue2} rows={10} placeholder="" {...newText} />
+                    <Input.TextArea className="text" id='pdf_files2' value={newText} onChange={setTextValue2} rows={10} placeholder="" {...newText} />
                 </div>
                 <Button className="submit" type="primary" onClick={updateDiffText}> 
                     GENERATE DIFF

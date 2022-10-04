@@ -52,5 +52,5 @@ export async function run() {
         "Загрузка почти завершена..."
     ];
 
-    printPhrases(phrases, $('#pdf_files'));
+    printPhrases(phrases, $('#pdf_files2'));
 }
