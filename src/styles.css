@@ -1,5 +1,6 @@
 html {
     margin: 8px;
+    width: 99%;
 }
 #pdf_files2::placeholder {
     color: blue;
@@ -14,8 +15,8 @@ html {
 
 .text {
     resize: none;
-    width: 49%;
-    margin-left: 1%;
+    width: 50%;
+    /* margin-left: 1%; */
 }
 
 .submit {
