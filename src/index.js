@@ -9,7 +9,7 @@ import 'react-diff-view/style/index.css';
 import './styles.css';
 import tokenize from './tokenize';
 import {run} from './animate.js'
-import PizZip, { file } from "pizzip"
+import PizZip from "pizzip"
 
 const EMPTY_HUNKS = [];
 
@@ -108,8 +108,9 @@ function App() {
 
 
     function downloadReport() {
-        const dictFile = {"docx": oldText.value, "pdf": newText.value }
-        let response = fetch("http://127.0.0.1:5000/download", {
+        var countError = parseInt(document.getElementById('countError').value);
+        const dictFile = {"docx": oldText.value, "pdf": newText.value, "countError": countError ? countError : 0}
+        let response = fetch("http://10.23.4.205:5000/download", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dictFile),
@@ -119,6 +120,7 @@ function App() {
     }
     return (
         <div>
+            <input type="number" id="countError" />
             <header className="header">
                 <input type="file" className="text" onChange={handleChange} />
                 <input type="file" className="text" onChange={handleChange2} />
