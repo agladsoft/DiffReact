@@ -115,16 +115,14 @@ function App() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dictFile),
                 mode: 'cors'
-            });
-        console.log(fetchPromise)
-        fetchPromise.then((response) => {
+            }).then((response) => {
             if (!response.ok) {
               throw new Error(`HTTP error: ${response.status}`);
             }
             return response.json();
           })
           .then((data) => {
-            console.log(data[0].name);
+            console.log(data);
           })
           .catch((error) => {
             console.error(`Could not get products: ${error}`);
