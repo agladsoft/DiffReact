@@ -84,7 +84,7 @@ function App() {
             const key = file.name
             const dictFile = {[key]: result }
             run()
-            let response = await fetch("http://127.0.0.1:5000", {
+            let response = await fetch("http://10.23.4.205:5000", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dictFile),
