@@ -110,7 +110,7 @@ function App() {
     async function downloadReport() {
         var countError = parseInt(document.getElementById('countError').value);
         const dictFile = {"docx": oldText.value, "pdf": newText.value, "countError": countError ? countError : 0}
-        document.getElementById('countError').addEventListener('load', ()=> {
+        document.getElementById('countError').addEventListener('click', ()=> {
             requestJson(dictFile)
         })
         async function requestJson(dictFile) {
