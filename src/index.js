@@ -110,20 +110,15 @@ function App() {
     async function downloadReport() {
         var countError = parseInt(document.getElementById('countError').value);
         const dictFile = {"docx": oldText.value, "pdf": newText.value, "countError": countError ? countError : 0}
-        document.getElementById('countError').addEventListener('click', ()=> {
-            requestJson(dictFile)
-        })
-        async function requestJson(dictFile) {
-            let response = await fetch("http://94.142.142.205:8000/get_disagreement/", {
+        let response = await fetch("http://94.142.142.205:8000/get_disagreement/", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dictFile),
                 mode: 'cors'
             });
-            const data = await response.json();
-            console.log(data)
-        }
+        console.log(response)
     }
+
     return (
         <div>
             <input type="number" id="countError" />
