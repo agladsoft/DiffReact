@@ -125,8 +125,6 @@ function App() {
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
-    
-        // clean up Url
         window.URL.revokeObjectURL(blobUrl);
         
     }
