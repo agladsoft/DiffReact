@@ -110,7 +110,7 @@ function App() {
     function downloadReport() {
         var countError = parseInt(document.getElementById('countError').value);
         const dictFile = {"docx": oldText.value, "pdf": newText.value, "countError": countError ? countError : 0}
-        let response = fetch("http://10.23.4.205:5000/download", {
+        let response = fetch("http://94.142.142.205:8000/swagger", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dictFile),
