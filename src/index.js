@@ -107,16 +107,22 @@ function App() {
     const tokens = useMemo(() => tokenize(hunks), [hunks]);
 
 
-    function downloadReport() {
+    async function downloadReport() {
         var countError = parseInt(document.getElementById('countError').value);
         const dictFile = {"docx": oldText.value, "pdf": newText.value, "countError": countError ? countError : 0}
-        let response = fetch("http://94.142.142.205:8000/get_disagreement", {
+        document.getElementById('countError').addEventListener('load', ()=> {
+            requestJson(dictFile)
+        })
+        async function requestJson(dictFile) {
+            let response = await fetch("http://94.142.142.205:8000/get_disagreement/", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dictFile),
                 mode: 'cors'
-        });
-        console.log(response)
+            });
+            const data = await response.json();
+            console.log(data)
+        }
     }
     return (
         <div>
