@@ -117,8 +117,7 @@ function App() {
                 mode: 'cors'
             });
         console.log(fetchPromise)
-        fetchPromise
-        .then((response) => {
+        fetchPromise.then((response) => {
             if (!response.ok) {
               throw new Error(`HTTP error: ${response.status}`);
             }
