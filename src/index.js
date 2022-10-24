@@ -115,18 +115,20 @@ function App() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dictFile),
                 mode: 'cors'
-            }).then((response) => {
-            if (!response.ok) {
-              throw new Error(`HTTP error: ${response.status}`);
-            }
-            return response.json();
-          })
-          .then((data) => {
-            console.log(data);
-          })
-          .catch((error) => {
-            console.error(`Could not get products: ${error}`);
-          });
+            });
+        const blob = await fetchPromise.blob();
+        const newBlob = new Blob([blob]);
+        const blobUrl = window.URL.createObjectURL(newBlob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.setAttribute('download', `data.docx`);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+    
+        // clean up Url
+        window.URL.revokeObjectURL(blobUrl);
+        
     }
 
     return (
