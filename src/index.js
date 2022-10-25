@@ -131,7 +131,10 @@ function App() {
 
     return (
         <div>
-            <input type="number" id="countError" />
+            <span style={{display: 'inline-block'}}>
+                <label for="countError" style={{display: 'block'}}> Количество ошибок в абзаце</label>
+                <Input className="number" type="number" id="countError" />
+            </span>
             <header className="header">
                 <input type="file" className="text" onChange={handleChange} />
                 <input type="file" className="text" onChange={handleChange2} />
