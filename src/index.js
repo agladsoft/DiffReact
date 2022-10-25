@@ -8,7 +8,7 @@ import 'antd/dist/antd.min.css';
 import 'react-diff-view/style/index.css';
 import './styles.css';
 import tokenize from './tokenize';
-import {run} from './animate.js'
+import $ from 'jquery';
 import PizZip from "pizzip"
 
 const EMPTY_HUNKS = [];
@@ -83,7 +83,7 @@ function App() {
         async function loadPDF(result) {
             const key = file.name
             const dictFile = {[key]: result }
-            run()
+            $('#pdf_files2').attr("placeholder", "Загрузка...");
             let response = await fetch("http://10.23.4.205:5000", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
