@@ -136,8 +136,14 @@ function App() {
                 <Input className="number" type="number" id="countError" />
             </span>
             <header className="header">
-                <input type="file" className="text" onChange={handleChange} />
-                <input type="file" className="text" onChange={handleChange2} />
+                <span style={{display: 'inline-block'}} className="text">
+                    <label for="docx" style={{display: 'block'}}>Загрузка docx</label>
+                    <input type="file"  id="docx" onChange={handleChange} />
+                </span>
+                <span style={{display: 'inline-block'}} className="text">
+                    <label for="pdf" style={{display: 'block'}}>Загрузка pdf</label>
+                    <input type="file"  id="pdf" onChange={handleChange2} />
+                </span>
                 <div className="input">
                     <Input.TextArea className="text" id='pdf_files' value={oldText} rows={18} placeholder="" {...oldText} />
                     <Input.TextArea className="text" id='pdf_files2' value={newText} rows={18} placeholder="" {...newText} />
