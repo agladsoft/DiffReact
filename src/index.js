@@ -110,6 +110,7 @@ function App() {
     async function downloadReport() {
         var countError = parseInt(document.getElementById('countError').value);
         const dictFile = {"docx": oldText.value, "pdf": newText.value, "countError": countError ? countError : 0}
+        console.log(dictFile)
         let fetchPromise = await fetch("http://94.142.142.205:8000/get_disagreement/", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
