@@ -116,6 +116,7 @@ function App() {
                 body: JSON.stringify(dictFile),
                 mode: 'cors'
             });
+        console.log(fetchPromise)
         const blob = await fetchPromise.blob();
         const newBlob = new Blob([blob]);
         const blobUrl = window.URL.createObjectURL(newBlob);
