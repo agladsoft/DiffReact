@@ -9,7 +9,7 @@ import 'react-diff-view/style/index.css';
 import './styles.css';
 import tokenize from './tokenize';
 import $ from 'jquery';
-import PizZip from "pizzip"
+import PizZip from "pizzip";
 
 const EMPTY_HUNKS = [];
 
@@ -38,35 +38,101 @@ function App() {
         };
     };
 
-    // insert Docx text
-    const [value, onChange] = useState('');
+    
     function str2xml(str) {
         if (str.charCodeAt(0) === 65279) str = str.substr(1);
         return new DOMParser().parseFromString(str, "text/xml");
     }
+
+
+    function addTextToStr(textXml, fullText, string='') {
+        if (textXml.childNodes) {
+            fullText += string + textXml.childNodes[0]?.nodeValue;
+            return fullText
+        }
+    }
+
+    function getTypeList(abstractsNum, lvl, numId) {
+        const lvlAttr = lvl.getAttribute("w:val");
+        const numIdAttr = numId.getAttribute("w:val");
+        for (let i = 0, len = abstractsNum.length; i < len; i++) {                
+            if (abstractsNum[i].getAttribute("w:abstractNumId") == numIdAttr) {
+                const lvlTags = abstractsNum[i].getElementsByTagName("w:lvl");
+                for (let j = 0, len = lvlTags.length; j < len; j++) {
+                    if (lvlTags[j].getAttribute("w:ilvl") == lvlAttr) {
+                        const typeList = lvlTags[j].getElementsByTagName("w:numFmt")[0].getAttribute("w:val");
+                        return typeList;
+                    }
+                }
+            } 
+        }
+    }
+
+
+    function getIterNumberList(textXml, fullText, string, ilvl, numberListHead, numberList, arrayNumberListHead) {
+        const numAttr = ilvl.getAttribute("w:val");
+        if (numAttr == 0) {
+            fullText = addTextToStr(textXml, fullText, `${numberListHead}. `);
+            arrayNumberListHead.push(numberListHead);
+            numberList = 1;
+            numberListHead += 1;
+        }
+        else if (numAttr == 1) {
+            fullText = (arrayNumberListHead.length != 0) ? addTextToStr(textXml, fullText, `${numberListHead - 1}.${numberList}. `) : addTextToStr(textXml, fullText, `${numberListHead}.${numberList}. `);
+            numberList += 1;
+        }
+        return [fullText, numberListHead, numberList];
+    }
+
+    function getBulletList(textXml, fullText, string, ilvl, numberListHead, numberList, arrayNumberListHead) {
+        fullText = addTextToStr(textXml, fullText, '— ');
+        return [fullText, numberListHead, numberList];
+    }
+
+    function getNothingList(textXml, fullText, string, ilvl, numberListHead, numberList, arrayNumberListHead) {
+        fullText = addTextToStr(textXml, fullText);
+        return [fullText, numberListHead, numberList];
+    }
+
+    // insert Docx text
+    const [value, onChange] = useState('');
+    const objectTypesList = {
+        "decimal": getIterNumberList,
+        "bullet": getBulletList,
+        null: getNothingList
+    }
     const handleChange = (e) => {
         var file = e.target.files[0];
         const reader = new FileReader();
+        var paragraphs = [];
+        var numberListHead = 1;
+        var numberList = 1;
+        var arrayNumberListHead = [];
         reader.onload = async (e) => {
-            const content = e.target.result;
+            const content = e.target.result;            
             const zip = new PizZip(content);
             const xml = str2xml(zip.files["word/document.xml"].asText());
+            const xmlNumbering = str2xml(zip.files["word/numbering.xml"].asText());
             const paragraphsXml = xml.getElementsByTagName("w:p");
-            var paragraphs = [];
-
-            for (let i = 0, len = paragraphsXml.length; i < len; i++) {
+            const abstractsNum = xmlNumbering.getElementsByTagName("w:abstractNum");
+            for (let i = 0, len = paragraphsXml.length; i < len; i++) {                
                 let fullText = "";
                 const textsXml = paragraphsXml[i].getElementsByTagName("w:t");
+                const ilvls = paragraphsXml[i].getElementsByTagName("w:ilvl");
+                const numsId = paragraphsXml[i].getElementsByTagName("w:numId");
                 for (let j = 0, len2 = textsXml.length; j < len2; j++) {
                     const textXml = textsXml[j];
-                    if (textXml.childNodes) {
-                        fullText += textXml.childNodes[0]?.nodeValue;
-                }
+                    const ilvl = ilvls[j];
+                    const numId = numsId[j];
+                    var typeList = (ilvl && numId) ? getTypeList(abstractsNum, ilvl, numId) : null;
+                    if (typeList in objectTypesList) {
+                        [fullText, numberListHead, numberList] = objectTypesList[typeList](textXml, fullText, '', ilvl, numberListHead, numberList, arrayNumberListHead);
+                    }
                 }
                 paragraphs.push(fullText.trim());
             }
-            paragraphs = paragraphs.filter(Boolean)
-            onChange(paragraphs.join('\n'))
+            paragraphs = paragraphs.filter(Boolean);
+            onChange(paragraphs.join('\n'));
         };
         reader.readAsBinaryString(file);
     };
@@ -81,10 +147,10 @@ function App() {
             loadPDF(fileReader.result)
         })
         async function loadPDF(result) {
-            const key = file.name
+            const key = file.name;
             const dictFile = {[key]: result }
             $('#pdf_files2').attr("placeholder", "Загрузка...");
-            let response = await fetch("http://10.23.4.205:5000", {
+            let response = await fetch("http://127.0.0.1:5000", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dictFile),
