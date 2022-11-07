@@ -148,8 +148,9 @@ function App() {
         })
         async function loadPDF(result) {
             const key = file.name;
-            const dictFile = {[key]: result }
+            const dictFile = {[key]: result };
             $('#pdf_files2').attr("placeholder", "Загрузка...");
+            console.log(dictFile);
             let response = await fetch("http://10.23.4.205:5000", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
