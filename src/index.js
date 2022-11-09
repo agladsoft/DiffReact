@@ -144,15 +144,13 @@ function App() {
         const file = e.target.files[0];
         console.log(file)
         const fileReader = new FileReader();
-        fileReader.addEventListener('load', ()=> {
-            loadPDF(fileReader.result)
-        })
-        async function loadPDF(result) {
+
+        async function loadPDF(file, result) {
             const key = file.name;
             const dictFile = {[key]: result };
             $('#pdf_files2').attr("placeholder", "Загрузка...");
             console.log("Length of binary pdf file", dictFile[key].length);
-            let response = await fetch("http://10.23.4.205:5000", {
+            let response = await fetch("http://127.0.0.1:5000", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dictFile),
@@ -164,6 +162,15 @@ function App() {
             const new_file = await response.json();
             onChangeNew(new_file['text']);
         }
+
+        $(fileReader).on('load', ()=> {
+            loadPDF(file, fileReader.result)
+        })
+
+        // fileReader.addEventListener('load', ()=> {
+        //     loadPDF(fileReader.result)
+        // })
+
         fileReader.readAsDataURL(file)
     };
     const oldText = useInput(value, onChange);
