@@ -11,7 +11,6 @@ import tokenize from './tokenize';
 import $ from 'jquery';
 import PizZip from "pizzip";
 
-const ws = new WebSocket('ws://10.23.4.205:8080')
 const EMPTY_HUNKS = [];
 
 const renderToken = (token, defaultRender, i) => {
