@@ -154,9 +154,11 @@ function App() {
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(dictFile),
+                dataType: 'json',
                 url: 'http://10.23.4.205:5000',
                 success: function (e) {
                     console.log(e);
+                    onChangeNew(e['text']);
                 },
                 error: function(error) {
                     console.log(error);
