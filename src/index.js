@@ -137,6 +137,75 @@ function App() {
         reader.readAsBinaryString(file);
     };
 
+    const openFile = function(event) {
+        var input = event.target.files[0];
+    
+        var readerFile = new FileReader();
+
+        function getResponse(base64) {
+            const key = input.name;
+            let formData = new FormData()
+            formData.append(key, base64)
+            console.log(formData)
+            const dictData = {[key]: base64}
+            console.log(dictData)
+            fetch('http://10.23.4.205:5000', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify(dictData)
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                if (data.errors) {
+                alert(data.errors)
+                }
+                else {
+                console.log(data)
+                }
+            })
+        }
+
+        readerFile.addEventListener('load', () => {
+            getResponse(readerFile.result)
+        })
+        readerFile.readAsDataURL(input);
+    
+    }
+
+    // const uploadForm = document.querySelector('.upload')
+    // if(uploadForm){
+    //     uploadForm.addEventListener('submit', function(e) {
+    //         e.preventDefault()
+    //         let file = e.target.uploadFile.files[0]
+    //         console.log(file)
+    //         let formData = new FormData()
+    //         formData.append('file', file)
+    //         console.log(formData)
+    //         fetch('http://127.0.0.1:5000', {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 "Accept": "application/json"
+    //             },
+    //             body: JSON.stringify({
+    //                 name: file,
+    //             })
+    //         })
+    //         .then(resp => resp.json())
+    //         .then(data => {
+    //             if (data.errors) {
+    //             alert(data.errors)
+    //             }
+    //             else {
+    //             console.log(data)
+    //             }
+    //         })
+    //     })
+    // }
+
     // insert PDF text
     const [valueNew, onChangeNew] = useState('');
     async function handleChange2(e) {
@@ -155,7 +224,7 @@ function App() {
                 contentType: 'application/json',
                 data: JSON.stringify(dictFile),
                 dataType: 'json',
-                url: 'http://10.23.4.205:5000',
+                url: 'http://127.0.0.1:5000',
                 success: function (e) {
                     console.log(e);
                     onChangeNew(e['text']);
@@ -236,6 +305,14 @@ function App() {
                     <label for="pdf" style={{display: 'block'}}>Загрузка pdf</label>
                     <input type="file"  id="pdf" onChange={handleChange2} />
                 </span>
+
+                <form class="upload">
+                    <br/><br/>
+                    <input type="file" name="uploadFile" accept=".pdf" onChange={openFile} required />
+                    <br/><br/>
+                    <input type="submit" />
+                </form>
+                
                 <div className="input">
                     <Input.TextArea className="text" id='pdf_files' value={oldText} rows={18} placeholder="" {...oldText} />
                     <Input.TextArea className="text" id='pdf_files2' value={newText} rows={18} placeholder="" {...newText} />
