@@ -210,7 +210,7 @@ function App() {
 
         async function loadPDF(result) {
             const key = file.name;
-            const dictFile = {[key]: key };
+            const dictFile = {[key]: result };
             $('#pdf_files2').attr("placeholder", "Загрузка...");
             console.log("Length of binary pdf file", dictFile[key].length);
             $.ajax({
