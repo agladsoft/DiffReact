@@ -142,6 +142,7 @@ function App() {
     async function handleChange2(e) {
         onChangeNew("");
         const file = e.target.files[0];
+        console.log(file)
         const fileReader = new FileReader();
         fileReader.addEventListener('load', ()=> {
             loadPDF(fileReader.result)
