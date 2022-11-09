@@ -137,43 +137,43 @@ function App() {
         reader.readAsBinaryString(file);
     };
 
-    const openFile = function(event) {
-        var input = event.target.files[0];
+    // const openFile = function(event) {
+    //     var input = event.target.files[0];
     
-        var readerFile = new FileReader();
+    //     var readerFile = new FileReader();
 
-        function getResponse(base64) {
-            const key = input.name;
-            let formData = new FormData()
-            formData.append(key, base64)
-            console.log(formData)
-            const dictData = {[key]: base64}
-            console.log(dictData)
-            fetch('http://10.23.4.205:5000', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
-                },
-                body: JSON.stringify(dictData)
-            })
-            .then(resp => resp.json())
-            .then(data => {
-                if (data.errors) {
-                alert(data.errors)
-                }
-                else {
-                console.log(data)
-                }
-            })
-        }
+    //     function getResponse(base64) {
+    //         const key = input.name;
+    //         let formData = new FormData()
+    //         formData.append(key, base64)
+    //         console.log(formData)
+    //         const dictData = {[key]: base64}
+    //         console.log(dictData)
+    //         fetch('http://10.23.4.205:5000', {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 "Accept": "application/json"
+    //             },
+    //             body: JSON.stringify(dictData)
+    //         })
+    //         .then(resp => resp.json())
+    //         .then(data => {
+    //             if (data.errors) {
+    //             alert(data.errors)
+    //             }
+    //             else {
+    //             console.log(data)
+    //             }
+    //         })
+    //     }
 
-        readerFile.addEventListener('load', () => {
-            getResponse(readerFile.result)
-        })
-        readerFile.readAsDataURL(input);
+    //     readerFile.addEventListener('load', () => {
+    //         getResponse(readerFile.result)
+    //     })
+    //     readerFile.readAsDataURL(input);
     
-    }
+    // }
 
     // const uploadForm = document.querySelector('.upload')
     // if(uploadForm){
@@ -306,12 +306,12 @@ function App() {
                     <input type="file"  id="pdf" onChange={handleChange2} />
                 </span>
 
-                <form class="upload">
+                {/* <form class="upload">
                     <br/><br/>
                     <input type="file" name="uploadFile" accept=".pdf" onChange={openFile} required />
                     <br/><br/>
                     <input type="submit" />
-                </form>
+                </form> */}
                 
                 <div className="input">
                     <Input.TextArea className="text" id='pdf_files' value={oldText} rows={18} placeholder="" {...oldText} />
