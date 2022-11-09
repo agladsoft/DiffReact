@@ -157,6 +157,9 @@ function App() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dictFile),
                 mode: 'cors'
+            })
+            .catch(error => {
+                console.log('ERROR WHILE UPLOADING IMAGE: ',error)
             });
             const new_file = await response.json();
             onChangeNew(new_file['text']);
