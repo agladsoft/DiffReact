@@ -137,69 +137,6 @@ function App() {
         reader.readAsBinaryString(file);
     };
 
-    // const uploadForm = document.querySelector('.upload')
-    // if(uploadForm) {
-    //     uploadForm.addEventListener('submit', function(e) {
-    //         e.preventDefault()
-    //         let file = e.target.uploadFile.files[0]
-    //         const key = file.name;
-    //         console.log(key)
-    //         let formData = new FormData()
-    //         formData.append(key, "value")
-    //         console.log(formData)
-    //         for (var [keys, value] of formData.entries()) { 
-    //             console.log(keys, value);
-    //         }
-
-
-    //         $.ajax({
-    //             url: 'http://127.0.0.1:5000',
-    //             data: formData,
-    //             cache: false,
-    //             contentType: false,
-    //             processData: false,
-    //             type: 'POST',
-    //             success: (res) => {
-    //                 console.log(res);
-    //                 let s3Conf = Object.assign(file, {
-    //                     confirmation: res.ETag,
-    //                     zipname : file.signature.stem + file.nativeFiles[0].name,
-    //                     status: "Done"
-    //                 });
-    //                 onChangeNew(s3Conf);
-    //             },
-    //             error: (err) => {
-    //                 console.error(err);
-    //                 let s3Conf = Object.assign(file, {
-    //                     error: err,
-    //                     status: "Done"
-    //                 });
-    //                 onChangeNew(s3Conf);
-    //             }
-    //         });
-
-
-
-    //         // fetch('http://127.0.0.1:5000', {
-    //         //     method: "POST",
-    //         //     headers: {
-    //         //         "Content-Type": "application/json",
-    //         //         "Accept": "application/json"
-    //         //     },
-    //         //     body: JSON.stringify(formData)
-    //         // })
-    //         // .then(resp => resp.json())
-    //         // .then(data => {
-    //         //     if (data.errors) {
-    //         //     alert(data.errors)
-    //         //     }
-    //         //     else {
-    //         //     console.log(data)
-    //         //     }
-    //         // })
-    //     })
-    // }
-
     // insert PDF text
     const [valueNew, onChangeNew] = useState('');
     async function handleChange2(e) {
@@ -228,7 +165,7 @@ function App() {
             }
             });
 
-            // let response = await fetch("http://127.0.0.1:5000", {
+            // let response = await fetch("http://10.23.4.205:5000", {
             //     method: 'POST',
             //     headers: { 'Content-Type': 'application/json' },
             //     body: formData,
@@ -299,17 +236,6 @@ function App() {
                     <label for="pdf" style={{display: 'block'}}>Загрузка pdf</label>
                     <input type="file"  id="pdf" onChange={handleChange2} />
                 </span>
-
-                {/* <form onsubmit="return false" class="upload">
-                    <br/><br/>
-                    <input type="file" name="uploadFile" accept=".pdf" required />
-                    <br/><br/>
-                    <input type="submit" />
-                </form> */}
-
-                {/* <form enctype="multipart/form-data" action="/upload" method="post">
-                    <input id="input" type="file" />
-                </form> */}
                 
                 <div className="input">
                     <Input.TextArea className="text" id='pdf_files' value={oldText} rows={18} placeholder="" {...oldText} />
