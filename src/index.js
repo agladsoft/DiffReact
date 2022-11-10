@@ -142,6 +142,26 @@ function App() {
     async function handleChange2(e) {
         onChangeNew("");
         const file = e.target.files[0];
+
+        // const key = file.name;
+        // const dictFile = {"file": key };
+        // $('#pdf_files2').attr("placeholder", "Загрузка...");
+        // console.log("Length of binary pdf file", dictFile[key].length);
+        // $.ajax({
+        //     type: 'POST',
+        //     contentType: 'application/json',
+        //     data: JSON.stringify(dictFile),
+        //     dataType: 'json',
+        //     url: 'http://10.23.4.205:5000',
+        //     success: function (e) {
+        //         console.log(e);
+        //         onChangeNew(e['text']);
+        //     },
+        //     error: function(error) {
+        //         console.log(error);
+        // }
+        // });
+
         console.log(file)
         const fileReader = new FileReader();
 
@@ -152,10 +172,9 @@ function App() {
             console.log("Length of binary pdf file", dictFile[key].length);
             $.ajax({
                 type: 'POST',
-                contentType: 'application/json',
                 data: JSON.stringify(dictFile),
                 dataType: 'json',
-                url: 'http://10.23.4.205:5000',
+                url: 'http://10.23.4.205:8080',
                 success: function (e) {
                     console.log(e);
                     onChangeNew(e['text']);
@@ -165,10 +184,10 @@ function App() {
             }
             });
 
-            // let response = await fetch("http://10.23.4.205:5000", {
+            // let response = await fetch("http://127.0.0.1:8080", {
             //     method: 'POST',
             //     headers: { 'Content-Type': 'application/json' },
-            //     body: formData,
+            //     body: dictFile,
             //     mode: 'cors'
             // })
             // .catch(error => {
