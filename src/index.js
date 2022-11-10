@@ -143,66 +143,66 @@ function App() {
         onChangeNew("");
         const file = e.target.files[0];
 
-        // const key = file.name;
-        // const dictFile = {"file": key };
-        // $('#pdf_files2').attr("placeholder", "Загрузка...");
-        // console.log("Length of binary pdf file", dictFile[key].length);
-        // $.ajax({
-        //     type: 'POST',
-        //     contentType: 'application/json',
-        //     data: JSON.stringify(dictFile),
-        //     dataType: 'json',
-        //     url: 'http://10.23.4.205:5000',
-        //     success: function (e) {
-        //         console.log(e);
-        //         onChangeNew(e['text']);
-        //     },
-        //     error: function(error) {
-        //         console.log(error);
-        // }
-        // });
-
-        console.log(file)
-        const fileReader = new FileReader();
-
-        async function loadPDF(result) {
-            const key = file.name;
-            const dictFile = {[key]: result };
-            $('#pdf_files2').attr("placeholder", "Загрузка...");
-            console.log("Length of binary pdf file", dictFile[key].length);
-            $.ajax({
-                type: 'POST',
-                data: JSON.stringify(dictFile),
-                dataType: 'json',
-                url: 'http://10.23.4.205:8080',
-                success: function (e) {
-                    console.log(e);
-                    onChangeNew(e['text']);
-                },
-                error: function(error) {
-                    console.log(error);
-            }
-            });
-
-            // let response = await fetch("http://127.0.0.1:8080", {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: dictFile,
-            //     mode: 'cors'
-            // })
-            // .catch(error => {
-            //     console.log('ERROR WHILE UPLOADING IMAGE: ',error)
-            // });
-
-            // const new_file = await response.json();
-            // onChangeNew(new_file['text']);
+        const key = file.name;
+        const dictFile = {"file": key };
+        $('#pdf_files2').attr("placeholder", "Загрузка...");
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(dictFile),
+            dataType: 'json',
+            url: 'http://10.23.4.205:5000',
+            success: function (e) {
+                console.log(e);
+                onChangeNew(e['text']);
+            },
+            error: function(error) {
+                alert("Файл находится не в папке")
+                console.log(error);
         }
+        });
 
-        fileReader.addEventListener('load', ()=> {
-            loadPDF(fileReader.result)
-        })
+        // console.log(file)
+        // const fileReader = new FileReader();
 
-        fileReader.readAsDataURL(file)
+        // async function loadPDF(result) {
+        //     const key = file.name;
+        //     const dictFile = {[key]: result };
+        //     $('#pdf_files2').attr("placeholder", "Загрузка...");
+        //     console.log("Length of binary pdf file", dictFile[key].length);
+        //     $.ajax({
+        //         type: 'POST',
+        //         data: JSON.stringify(dictFile),
+        //         dataType: 'json',
+        //         url: 'http://127.0.0.1:5000',
+        //         success: function (e) {
+        //             console.log(e);
+        //             onChangeNew(e['text']);
+        //         },
+        //         error: function(error) {
+        //             console.log(error);
+        //     }
+        //     });
+
+        //     // let response = await fetch("http://127.0.0.1:8080", {
+        //     //     method: 'POST',
+        //     //     headers: { 'Content-Type': 'application/json' },
+        //     //     body: dictFile,
+        //     //     mode: 'cors'
+        //     // })
+        //     // .catch(error => {
+        //     //     console.log('ERROR WHILE UPLOADING IMAGE: ',error)
+        //     // });
+
+        //     // const new_file = await response.json();
+        //     // onChangeNew(new_file['text']);
+        // }
+
+        // fileReader.addEventListener('load', ()=> {
+        //     loadPDF(fileReader.result)
+        // })
+
+        // fileReader.readAsDataURL(file)
     };
     const oldText = useInput(value, onChange);
     const newText = useInput(valueNew, onChangeNew);
