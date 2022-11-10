@@ -157,7 +157,7 @@ function App() {
                 onChangeNew(e['text']);
             },
             error: function(error) {
-                alert("Файл находится не в папке")
+                alert(`Файл с именем ${key} не найден на сервере. Пожалуйста, загрузите на сервер и повторите выбор файла на этой странице.`)
                 console.log(error);
         }
         });
